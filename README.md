@@ -25,6 +25,10 @@ docker execやdocker run時に作成したファイルをホスト側から編�
 上記コマンドの実行時はユーザ権限での実行を推奨します。  
 コマンドが長くなりますのでエイリアス登録がおすすめです。
 ```
+emacs ~/.bashrc
+---
+# 追記
 alias doce='docker-compose exec -u $(id -u $USER)'
 alias docr='docker-compose run -u $(id -u $USER)'
+---
 ```
