@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:latest
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - '3306:3306'
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: '${DJANGO_DB_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${DJANGO_DB_NAME}'
+      MYSQL_USER: '${DJANGO_DB_USER}'
+      MYSQL_PASSWORD: '${DJANGO_DB_PASSWORD}'
+    volumes:
+      - /var/lib/mysql
+    env_file:
+      - ./.env
+
+  web:
+    build: .
+    command: "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./.env
