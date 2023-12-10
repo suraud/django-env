@@ -5,7 +5,7 @@ docker compose up db -d
 ```
 DBマイグレーション
 ```
-docker compose run -u (id -u $USER) web python manage.py migrate
+docker compose run -u $(id -u $USER) web python manage.py migrate
 ```
 コンテナ起動
 ```
@@ -13,7 +13,7 @@ docker compose up -d
 ```
 fixtureデータ取り込み
 ```
-docker compose exec -u (id -u $USER) web python manage.py loaddata admin/fixtures/initial_data.json
+docker compose exec -u $(id -u $USER) web python manage.py loaddata admin/fixtures/initial_data.json
 ```
 
 ### 構築手順
