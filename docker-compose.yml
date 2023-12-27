@@ -12,12 +12,15 @@ services:
       MYSQL_DATABASE: '${DJANGO_DB_NAME}'
       MYSQL_USER: '${DJANGO_DB_USER}'
       MYSQL_PASSWORD: '${DJANGO_DB_PASSWORD}'
+    container_name: drf-blog-db
+    networks:
+      private-drf-nw:
+        ipv4_address: 192.168.82.200
     volumes:
-      - djangoDB:/var/lib/mysql
+      - drfBlogDB:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d
     env_file:
       - ./.env
-
   web:
     build: .
     command: "python manage.py runserver 0.0.0.0:8000"
@@ -27,10 +30,23 @@ services:
       - /etc/group:/etc/group:ro
     ports:
       - "8000:8000"
+    container_name: drf-blog-web
+    networks:
+      private-drf-nw:
+        ipv4_address: 192.168.82.100
     depends_on:
-      - db
+      db:
+        condition: service_started
     env_file:
       - ./.env
+networks:
+  private-drf-nw:
+    driver: bridge
+    name: private-drf-nw
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.168.82.0/24
 volumes:
-  djangoDB:
-    name: djangoDB
+  drfBlogDB:
+    name: drfBlogDB
