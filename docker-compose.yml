@@ -13,7 +13,8 @@ services:
       MYSQL_USER: '${DJANGO_DB_USER}'
       MYSQL_PASSWORD: '${DJANGO_DB_PASSWORD}'
     volumes:
-      - /var/lib/mysql
+      - djangoDB:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d
     env_file:
       - ./.env
 
@@ -30,3 +31,6 @@ services:
       - db
     env_file:
       - ./.env
+volumes:
+  djangoDB:
+    name: djangoDB
