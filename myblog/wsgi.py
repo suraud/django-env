@@ -9,8 +9,20 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 
 import os
 
+import environ
+from pathlib import Path
+
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myblog.settings')
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# .env読み込み
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+
+settings = env('DJANGO_PROJECT_NAME') + '.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings)
 
 application = get_wsgi_application()
