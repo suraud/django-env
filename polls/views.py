@@ -6,7 +6,9 @@ from django.views import generic
 from django.db.models import F
 from django.utils import timezone
 
+from rest_framework import viewsets
 from .models import Question, Choice
+from .serializers import QuestionSerializer
 
 """ def index(request):
     return HttpResponse("Hello, Polls!") """
@@ -21,6 +23,10 @@ from .models import Question, Choice
     }
     return render(request, "polls/index.html", context) """
 
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
 
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
@@ -28,6 +34,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
+        print(self.request.META.get('REMOTE_ADDR'))
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
 
 
