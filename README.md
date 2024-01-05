@@ -32,3 +32,7 @@ alias doce='docker-compose exec -u $(id -u $USER)'
 alias docr='docker-compose run -u $(id -u $USER)'
 ---
 ```
+
+### プロジェクト名の変更方法
+- プロジェクトディレクトリの名前を変更
+- .envのDJANGO_PROJECT_NAMEを変更
